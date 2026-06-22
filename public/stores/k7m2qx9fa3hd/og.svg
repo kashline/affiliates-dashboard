@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="og" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7f9"/>
+      <stop offset="1" stop-color="#ffe3ec"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#og)"/>
+  <path d="M600 360c-44-30-76-58-76-95a40 40 0 0 1 76-19 40 40 0 0 1 76 19c0 37-32 65-76 95z" fill="#e8638a"/>
+  <text x="600" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="64" font-weight="700" fill="#3a2730">Warm &amp; Fuzzy Finds</text>
+  <text x="600" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#8a6f78">Little gifts for the moments and ones that matter</text>
+</svg>

@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* No global color theme: each storefront sets its own palette via inline CSS
+ * custom properties (--bg, --fg, --accent, ...) on its root element. Avoid a
+ * prefers-color-scheme override here, which would fight per-store theming. */
+body {
+  font-family:
+    var(--font-sans, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+      Roboto, Helvetica, Arial, sans-serif);
+}
