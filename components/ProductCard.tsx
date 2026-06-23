@@ -5,10 +5,17 @@ import type { AffiliateProduct } from "@/lib/stores/types";
 // `unoptimized` serves the local SVG placeholders directly (bypasses the image
 // optimizer's SVG restriction). When real raster affiliate images are used, drop
 // `unoptimized` and add the host to `images.remotePatterns` in next.config.ts.
-export default function ProductCard({ product }: { product: AffiliateProduct }) {
+function clickHref(product: AffiliateProduct, storeId: string): string {
+  // Placeholder links aren't real Amazon URLs — link them directly.
+  if (product.url === '#') return '#';
+  const params = new URLSearchParams({ dest: product.url, title: product.title, store: storeId });
+  return `/api/click?${params}`;
+}
+
+export default function ProductCard({ product, storeId }: { product: AffiliateProduct; storeId: string }) {
   return (
     <a
-      href={product.url}
+      href={clickHref(product, storeId)}
       target="_blank"
       rel="sponsored nofollow noopener"
       className="group flex flex-col overflow-hidden rounded-[var(--radius)] bg-[var(--card)] shadow-sm ring-1 ring-black/5 transition-shadow hover:shadow-md"

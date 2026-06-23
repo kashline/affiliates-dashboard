@@ -81,7 +81,7 @@ export default async function StorePage({ params }: PageProps<"/[storeId]">) {
       <main className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16">
         <StoreFrontHeader store={store} />
         <AffiliateDisclosure text={store.disclosure} />
-        <ProductGrid products={products} />
+        <ProductGrid products={products} storeId={storeId} />
       </main>
     </div>
   );
