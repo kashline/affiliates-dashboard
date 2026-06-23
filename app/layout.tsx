@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 
 // Neutral root shell. Deliberately brand-less and with no shared chrome: every
@@ -22,7 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
-      <body className="min-h-full">{children}</body>
+      <Analytics />
+      <body className="min-h-full">{children}
+      </body>
     </html>
   );
 }
