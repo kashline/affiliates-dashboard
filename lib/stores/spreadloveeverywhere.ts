@@ -171,6 +171,6 @@ export const spreadLoveEverywhere: StoreConfig = {
     themeColor: "#e8638a",
   },
   disclosure:
-    "Some links on this page are affiliate links. If you buy through them, we may earn a small commission at no extra cost to you.",
+    "As an Amazon Associate we earn from qualifying purchases. Some links on this page are affiliate links; if you buy through them we may earn a small commission at no extra cost to you.",
   products,
 };

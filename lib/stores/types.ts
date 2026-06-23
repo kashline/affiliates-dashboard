@@ -77,3 +77,11 @@ export interface RotationResult {
   readonly period: PeriodId;
   readonly products: readonly AffiliateProduct[];
 }
+
+/** A generated list persisted in KV by the weekly refresh job. */
+export interface RotatedList {
+  readonly periodKey: string;
+  readonly generatedAt: string; // ISO timestamp
+  readonly source: "claude" | "fallback";
+  readonly products: readonly AffiliateProduct[];
+}

@@ -1,0 +1,24 @@
+# Copy to terraform.tfvars (gitignored) and fill in, OR export each as a
+# TF_VAR_* environment variable (recommended for secrets), e.g.:
+#   export TF_VAR_vercel_api_token=...
+#   export TF_VAR_anthropic_api_key=...
+
+# Provider credentials
+vercel_api_token = "vercel_xxx"
+vercel_team      = null          # team slug/ID, or null for a personal account
+upstash_email    = "you@example.com"
+upstash_api_key  = "upstash_xxx"
+
+# Project
+project_name      = "affiliates-dashboard"
+github_repo       = null          # "owner/affiliates-dashboard" to manage the git connection
+production_branch = null          # "main"
+
+# Upstash Redis
+upstash_region         = "us-east-1"   # a single region, or "global"
+upstash_primary_region = null          # required only when upstash_region = "global"
+
+# Application env var values
+anthropic_api_key    = "sk-ant-xxx"
+amazon_associate_tag = "yourtag-20"
+site_url             = null        # "https://yourdomain.com"

@@ -6,7 +6,7 @@ import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import ProductGrid from "@/components/ProductGrid";
 import StoreFrontHeader from "@/components/StoreFrontHeader";
 import { getAllStoreIds, resolveStore } from "@/lib/stores/registry";
-import { selectRotatedProducts } from "@/lib/stores/rotation";
+import { getStoreProducts } from "@/lib/stores/products";
 import type { StoreConfig } from "@/lib/stores/types";
 
 // Only registered opaque slugs are ever served. Combined with dynamicParams=false,
@@ -71,7 +71,7 @@ export default async function StorePage({ params }: PageProps<"/[storeId]">) {
   const store = resolveStore(storeId);
   if (!store) notFound(); // defense-in-depth even with dynamicParams=false
 
-  const { products } = selectRotatedProducts(store);
+  const { products } = await getStoreProducts(store);
 
   return (
     <div

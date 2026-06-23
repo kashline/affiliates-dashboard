@@ -1,0 +1,14 @@
+# Local state contains secrets — never commit it
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.tfstate.lock.info
+
+# Secret var files (keep the example)
+*.tfvars
+!*.tfvars.example
+
+crash.log
+crash.*.log
+
+# Commit .terraform.lock.hcl — it is intentionally NOT ignored.
