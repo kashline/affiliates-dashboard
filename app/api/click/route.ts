@@ -1,7 +1,9 @@
 import { redirect } from 'next/navigation';
 import { sendClickNotification } from '@/lib/email';
+import { MERCHANT_HOSTS } from '@/lib/stores/merchants';
 
-const ALLOWED_HOSTS = new Set(['amazon.com', 'www.amazon.com']);
+// Every host any affiliate merchant is allowed to redirect to (Amazon, Chewy, ...).
+const ALLOWED_HOSTS = MERCHANT_HOSTS;
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);

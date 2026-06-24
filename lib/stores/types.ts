@@ -5,6 +5,8 @@
 // and all branding/theme/copy is driven from a per-store StoreConfig so two stores
 // never look or feel like the same app.
 
+import type { MerchantId } from "./merchants";
+
 export type RotationCadence = "weekly" | "monthly";
 
 /** A single affiliate product in a store's curated pool. */
@@ -12,9 +14,13 @@ export interface AffiliateProduct {
   /** Stable unique id within the pool. Used as the React key and to keep the
    *  seeded rotation deterministic across renders. Never reuse an id. */
   readonly id: string;
+  /** Which affiliate program this links out to. Defaults to "amazon" when unset;
+   *  drives the brand "View on X" treatment and the featured-row grouping. */
+  readonly merchant?: MerchantId;
   readonly title: string;
-  /** Local path under /public (e.g. "/stores/<slug>/products/x.svg") for MVP
-   *  placeholders, or an absolute URL once `images.remotePatterns` is configured. */
+  /** Image URL. Today this is the generated branded card from /api/placeholder
+   *  (see lib/stores/placeholder.ts); swap to a real product photo URL — and add
+   *  its host to `images.remotePatterns` — once PA-API / a product feed exists. */
   readonly imageSrc: string;
   readonly imageAlt: string;
   /** Outbound/affiliate link. Placeholder "#" for the MVP. */

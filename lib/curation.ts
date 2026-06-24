@@ -9,6 +9,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { buildAmazonSearchLink } from "./amazon";
+import { iconForProduct, placeholderImage } from "./stores/placeholder";
 import type { AffiliateProduct, StoreConfig } from "./stores/types";
 
 // Per the Anthropic API reference: default to Opus 4.8 with adaptive thinking.
@@ -85,10 +86,19 @@ function toProduct(
   item: CuratedItem,
   index: number,
 ): AffiliateProduct {
+  const id = `${slugify(item.title)}-${index}`;
+  const tags = item.category ? [...item.tags, item.category] : item.tags;
   return {
-    id: `${slugify(item.title)}-${index}`,
+    id,
+    // Claude curation currently produces Amazon search ideas only.
+    merchant: "amazon",
     title: item.title,
-    imageSrc: `/stores/${store.opaqueSlug}/products/generic.svg`,
+    imageSrc: placeholderImage({
+      merchant: "amazon",
+      label: item.title,
+      seed: id,
+      icon: iconForProduct(item.title, tags),
+    }),
     imageAlt: item.title,
     url: buildAmazonSearchLink(item.searchQuery),
     blurb: item.blurb,

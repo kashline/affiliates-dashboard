@@ -70,6 +70,13 @@ function mulberry32(seed: number): () => number {
   };
 }
 
+/** Deterministic index in [0, n) from a key string. Used to pick a stable-per-period
+ *  representative (e.g. one featured product per merchant) without a database. */
+export function seededIndex(key: string, n: number): number {
+  if (n <= 0) return 0;
+  return Math.floor(mulberry32(xmur3(key))() * n);
+}
+
 /** Deterministic Fisher–Yates shuffle of a copy of `items` using `rng`. */
 function seededShuffle<T>(items: readonly T[], rng: () => number): T[] {
   const out = items.slice();

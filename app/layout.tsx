@@ -23,6 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased">
+      <head>
+        <meta name='impact-site-verification' value='6b1c28d5-c1b8-48b2-9227-8fc56afce400' />
+      </head>
       <Analytics />
       <body className="min-h-full">{children}
       </body>

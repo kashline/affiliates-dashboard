@@ -3,9 +3,11 @@ import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
+import FeaturedRow from "@/components/FeaturedRow";
 import ProductGrid from "@/components/ProductGrid";
 import StoreFrontHeader from "@/components/StoreFrontHeader";
 import { getAllStoreIds, resolveStore } from "@/lib/stores/registry";
+import { selectFeatured } from "@/lib/stores/featured";
 import { getStoreProducts } from "@/lib/stores/products";
 import type { StoreConfig } from "@/lib/stores/types";
 
@@ -73,6 +75,12 @@ export default async function StorePage({ params }: PageProps<"/[storeId]">) {
 
   const { products } = await getStoreProducts(store);
 
+  // Lead with one product per affiliate; drop those from the grid so they don't
+  // immediately repeat right below the featured strip.
+  const featured = selectFeatured(store);
+  const featuredIds = new Set(featured.map((p) => p.id));
+  const gridProducts = products.filter((p) => !featuredIds.has(p.id));
+
   return (
     <div
       style={themeVars(store)}
@@ -80,8 +88,9 @@ export default async function StorePage({ params }: PageProps<"/[storeId]">) {
     >
       <main className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-16">
         <StoreFrontHeader store={store} />
+        <FeaturedRow products={featured} storeId={storeId} />
         <AffiliateDisclosure text={store.disclosure} />
-        <ProductGrid products={products} storeId={storeId} />
+        <ProductGrid products={gridProducts} storeId={storeId} />
       </main>
     </div>
   );
