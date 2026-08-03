@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 
@@ -9,7 +8,7 @@ import StoreFrontHeader from "@/components/StoreFrontHeader";
 import { getAllStoreIds, resolveStore } from "@/lib/stores/registry";
 import { selectFeatured } from "@/lib/stores/featured";
 import { getStoreProducts } from "@/lib/stores/products";
-import type { StoreConfig } from "@/lib/stores/types";
+import { themeVars } from "@/lib/stores/theme";
 
 // Only registered opaque slugs are ever served. Combined with dynamicParams=false,
 // every other URL returns the standard 404 — tenants cannot be enumerated.
@@ -52,20 +51,6 @@ export async function generateViewport({
   const { storeId } = await params;
   const store = resolveStore(storeId);
   return store?.meta.themeColor ? { themeColor: store.meta.themeColor } : {};
-}
-
-/** Maps the store theme onto the CSS custom properties consumed by the components. */
-function themeVars(store: StoreConfig): CSSProperties {
-  const { theme } = store;
-  return {
-    "--bg": theme.colorBackground,
-    "--fg": theme.colorForeground,
-    "--muted": theme.colorMuted,
-    "--accent": theme.colorAccent,
-    "--accent-fg": theme.colorAccentForeground,
-    "--card": theme.colorCard ?? "#ffffff",
-    "--radius": theme.radius ?? "1rem",
-  } as CSSProperties;
 }
 
 export default async function StorePage({ params }: PageProps<"/[storeId]">) {

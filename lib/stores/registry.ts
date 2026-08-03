@@ -8,8 +8,9 @@
 
 import type { StoreConfig } from "./types";
 import { spreadLoveEverywhere } from "./spreadloveeverywhere";
+import { everydayTopPicks } from "./everydaytoppicks";
 
-const STORES: readonly StoreConfig[] = [spreadLoveEverywhere];
+const STORES: readonly StoreConfig[] = [spreadLoveEverywhere, everydayTopPicks];
 
 const STORE_BY_SLUG: ReadonlyMap<string, StoreConfig> = new Map(
   STORES.map((store) => [store.opaqueSlug, store]),

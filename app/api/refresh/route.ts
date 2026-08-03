@@ -8,6 +8,7 @@
 
 import { revalidatePath } from "next/cache";
 import { curateProducts } from "@/lib/curation";
+import { everydayTopPicks } from "@/lib/stores/everydaytoppicks";
 import { getAllStoreIds, resolveStore } from "@/lib/stores/registry";
 import { isKvConfigured, setStoreList } from "@/lib/stores/products";
 import { periodKey } from "@/lib/stores/rotation";
@@ -58,6 +59,8 @@ export async function GET(request: Request): Promise<Response> {
         products,
       });
       revalidatePath(`/${store.opaqueSlug}`);
+      // The general store is also rendered at the root route.
+      if (store.opaqueSlug === everydayTopPicks.opaqueSlug) revalidatePath("/");
       results.push({ storeId, ok: true, count: products.length });
     } catch (error) {
       results.push({
