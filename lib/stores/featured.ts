@@ -36,5 +36,8 @@ export function selectFeatured(
     const idx = seededIndex(`${store.opaqueSlug}:featured:${key}:${merchant.id}`, list.length);
     featured.push(list[idx]);
   }
-  return featured;
+  // The strip only exists to show *variety*; FeaturedRow hides itself below two
+  // items, so return none — otherwise the pages would still exclude the lone
+  // "featured" pick from the grid and it would vanish from the storefront.
+  return featured.length >= 2 ? featured : [];
 }

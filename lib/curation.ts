@@ -2,13 +2,15 @@
 //
 // Given a store's theme and the current month/season, Claude proposes a fresh
 // set of giftable, on-theme product ideas plus an Amazon search query for each.
-// We turn those into AffiliateProduct records (tagged Amazon search links +
-// placeholder imagery). This is the "trending, hands-off" engine: until PA-API
-// is available it's Claude's seasonal/thematic judgment rather than live
+// We turn those into AffiliateProduct records: tagged Amazon search links, plus
+// a real product image found by name (lib/imageSearch.ts) with the generated
+// placeholder card as fallback. This is the "trending, hands-off" engine: until
+// PA-API is available it's Claude's seasonal/thematic judgment rather than live
 // best-seller data, and links land on tagged search pages rather than ASINs.
 
 import Anthropic from "@anthropic-ai/sdk";
 import { buildAmazonSearchLink } from "./amazon";
+import { findAmazonImage } from "./imageSearch";
 import { iconForProduct, placeholderImage } from "./stores/placeholder";
 import type { AffiliateProduct, StoreConfig } from "./stores/types";
 
@@ -81,24 +83,29 @@ function slugify(s: string): string {
   );
 }
 
-function toProduct(
+async function toProduct(
   store: StoreConfig,
   item: CuratedItem,
   index: number,
-): AffiliateProduct {
+): Promise<AffiliateProduct> {
   const id = `${slugify(item.title)}-${index}`;
   const tags = item.category ? [...item.tags, item.category] : item.tags;
+  // Best-effort real product photo, found by name; the generated placeholder
+  // card is the fallback when the lookup finds nothing.
+  const image = await findAmazonImage(item.searchQuery);
   return {
     id,
     // Claude curation currently produces Amazon search ideas only.
     merchant: "amazon",
     title: item.title,
-    imageSrc: placeholderImage({
-      merchant: "amazon",
-      label: item.title,
-      seed: id,
-      icon: iconForProduct(item.title, tags),
-    }),
+    imageSrc:
+      image ??
+      placeholderImage({
+        merchant: "amazon",
+        label: item.title,
+        seed: id,
+        icon: iconForProduct(item.title, tags),
+      }),
     imageAlt: item.title,
     url: buildAmazonSearchLink(item.searchQuery),
     blurb: item.blurb,
@@ -145,7 +152,9 @@ export async function curateProducts(
     throw new Error("Curation returned no items");
   }
 
-  return parsed.items
-    .slice(0, store.itemsPerPeriod)
-    .map((item, i) => toProduct(store, item, i));
+  return Promise.all(
+    parsed.items
+      .slice(0, store.itemsPerPeriod)
+      .map((item, i) => toProduct(store, item, i)),
+  );
 }

@@ -1,17 +1,21 @@
 // Affiliate merchant registry.
 //
-// A "merchant" is one affiliate program the storefront links out to (Amazon,
-// Chewy, ...). Centralizing it here gives every product a consistent brand
-// treatment (the "View on X" call-to-action and its colors), a single source of
-// truth for which outbound hosts the /api/click redirector is allowed to send
-// visitors to, and one place to build each program's search link.
+// A "merchant" is one affiliate program the storefront links out to. Centralizing
+// it here gives every product a consistent brand treatment (the "View on X"
+// call-to-action and its colors), a single source of truth for which outbound
+// hosts the /api/click redirector is allowed to send visitors to, and one place
+// to build each program's search link.
+//
+// Amazon is currently the only merchant (Chewy's affiliate application was
+// denied 2026-08-03 and it was removed). The registry shape stays so adding the
+// next program is one entry here plus `merchant:` tags on its products.
 //
 // Products carry an optional `merchant` id (see types.ts) that defaults to
-// "amazon", so existing Amazon-only pools need no changes.
+// "amazon", so Amazon-only pools need no changes.
 
 import { buildAmazonSearchLink } from "../amazon";
 
-export type MerchantId = "amazon" | "chewy";
+export type MerchantId = "amazon";
 
 export interface Merchant {
   readonly id: MerchantId;
@@ -37,14 +41,6 @@ export const MERCHANTS: readonly Merchant[] = [
     pillTextColor: "#131921",
     hosts: ["amazon.com", "www.amazon.com"],
   },
-  {
-    id: "chewy",
-    name: "Chewy",
-    cta: "View on Chewy",
-    pillColor: "#1c4cb8",
-    pillTextColor: "#ffffff",
-    hosts: ["chewy.com", "www.chewy.com"],
-  },
 ];
 
 const BY_ID: ReadonlyMap<MerchantId, Merchant> = new Map(
@@ -62,16 +58,11 @@ export const MERCHANT_HOSTS: ReadonlySet<string> = new Set(
 );
 
 /**
- * Build a tagged search-results link for a merchant. Without PA-API (Amazon) /
- * a product feed (Chewy) we can't link to specific items, but a search link is a
- * real, working destination — clicks still land on the right store.
+ * Build a tagged search-results link for a merchant. Without PA-API we can't
+ * link to specific items, but a search link is a real, working destination —
+ * clicks still land on the right store.
  */
 export function buildMerchantSearchLink(id: MerchantId, query: string): string {
-  if (id === "chewy") {
-    // Chewy's affiliate program runs through a network (not a simple tag param),
-    // so this is an untagged but real search link for now.
-    const params = new URLSearchParams({ query });
-    return `https://www.chewy.com/s?${params.toString()}`;
-  }
+  void id; // single-merchant today; the signature survives for the next program
   return buildAmazonSearchLink(query);
 }

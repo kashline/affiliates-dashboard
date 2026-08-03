@@ -18,9 +18,9 @@ export interface AffiliateProduct {
    *  drives the brand "View on X" treatment and the featured-row grouping. */
   readonly merchant?: MerchantId;
   readonly title: string;
-  /** Image URL. Today this is the generated branded card from /api/placeholder
-   *  (see lib/stores/placeholder.ts); swap to a real product photo URL — and add
-   *  its host to `images.remotePatterns` — once PA-API / a product feed exists. */
+  /** Image URL: a real Amazon CDN product photo found by name (lib/imageSearch.ts
+   *  at curation time, or hard-coded in the static pools), falling back to the
+   *  generated branded card from /api/placeholder when no photo was found. */
   readonly imageSrc: string;
   readonly imageAlt: string;
   /** Outbound/affiliate link. Placeholder "#" for the MVP. */

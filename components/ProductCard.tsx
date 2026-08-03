@@ -4,9 +4,10 @@ import { getMerchant } from "@/lib/stores/merchants";
 import type { AffiliateProduct } from "@/lib/stores/types";
 
 // Server component — no client interactivity needed.
-// `unoptimized` serves the generated SVG placeholders directly (bypasses the
-// image optimizer's SVG restriction). When real raster affiliate images are used,
-// drop `unoptimized` and add the host to `images.remotePatterns` in next.config.ts.
+// `unoptimized` is deliberate for both image kinds we serve: the generated SVG
+// placeholder cards (the optimizer refuses SVG) and hotlinked Amazon CDN photos
+// (already sized via the URL's _AC_SL600_ modifier; proxying them through the
+// optimizer would just add a fetch hop that Amazon may refuse).
 
 export default function ProductCard({
   product,

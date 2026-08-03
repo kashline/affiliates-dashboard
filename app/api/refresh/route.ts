@@ -20,6 +20,10 @@ interface RefreshResult {
   storeId: string;
   ok: boolean;
   count?: number;
+  /** How many products got a real Amazon image (vs the placeholder fallback).
+   *  The image lookup degrades silently by design — surface it here so a broken
+   *  lookup is visible in the cron result instead of reading as all-clear. */
+  realImages?: number;
   error?: string;
 }
 
@@ -61,7 +65,12 @@ export async function GET(request: Request): Promise<Response> {
       revalidatePath(`/${store.opaqueSlug}`);
       // The general store is also rendered at the root route.
       if (store.opaqueSlug === everydayTopPicks.opaqueSlug) revalidatePath("/");
-      results.push({ storeId, ok: true, count: products.length });
+      results.push({
+        storeId,
+        ok: true,
+        count: products.length,
+        realImages: products.filter((p) => !p.imageSrc.startsWith("/api/")).length,
+      });
     } catch (error) {
       results.push({
         storeId,
