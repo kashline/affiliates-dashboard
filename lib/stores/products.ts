@@ -45,6 +45,20 @@ export async function getStoreProducts(
   return { products, source: "fallback" };
 }
 
+/** The raw KV list for a store — no pool fallback. Null when KV is unset,
+ *  unreachable, or holds nothing for this store (the pool serves then). */
+export async function getStoreList(
+  opaqueSlug: string,
+): Promise<RotatedList | null> {
+  const redis = getRedis();
+  if (!redis) return null;
+  try {
+    return (await redis.get<RotatedList>(kvKey(opaqueSlug))) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function setStoreList(
   opaqueSlug: string,
   record: RotatedList,

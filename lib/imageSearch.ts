@@ -16,11 +16,12 @@ const UA =
 const FETCH_TIMEOUT_MS = 8_000;
 
 /** Rewrite an Amazon image URL's size modifier to a storefront-friendly 600px. */
-function normalizeAmazonImage(url: string): string {
+export function normalizeAmazonImage(url: string): string {
   return url.replace(/\._[^./]+_\.(jpe?g|png)$/i, "._AC_SL600_.$1");
 }
 
-function isAmazonCdn(url: string): boolean {
+/** True when the URL is hosted on Amazon's image CDN (media-amazon.com). */
+export function isAmazonCdn(url: string): boolean {
   try {
     return /(^|\.)media-amazon\.com$/.test(new URL(url).hostname);
   } catch {
