@@ -97,7 +97,7 @@ const pool: readonly PoolItem[] = [
     title: "Brass Windproof Lighter",
     imageAlt: "Brushed brass windproof flip-top lighter",
     searchQuery: "brass windproof lighter",
-    image: "https://m.media-amazon.com/images/I/61lp0G-yRHL._AC_SL600_.jpg",
+    image: "https://m.media-amazon.com/images/I/71zbI8sUwUL._AC_SL600_.jpg",
     blurb: "A design that has survived every war since it was issued.",
     tags: ["gear", "edc", "brass", "gift"],
   },
